@@ -34,3 +34,6 @@ google-services.json
 
 # New additions from the code block
 .DS_Store
+
+node_modules/
+.env
