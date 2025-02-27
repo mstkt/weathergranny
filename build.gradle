@@ -1,20 +1,15 @@
-dependencies {
-    // Compose
-    implementation "androidx.compose.ui:ui:1.5.4"
-    implementation "androidx.compose.material3:material3:1.1.2"
-    implementation "androidx.compose.runtime:runtime:1.5.4"
-    
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    
-    // WorkManager
-    implementation "androidx.work:work-runtime-ktx:2.9.0"
-    
-    // Location Services
-    implementation "com.google.android.gms:play-services-location:21.0.1"
-    
-    // Dependency Injection
-    implementation "com.google.dagger:hilt-android:2.48"
-    kapt "com.google.dagger:hilt-android-compiler:2.48"
-} 
+// Top-level build file
+buildscript {
+    dependencies {
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44'
+    }
+}
+
+plugins {
+    id 'com.android.application' version '8.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
+}
+
+ext {
+    compose_compiler_version = "1.5.8"
+}

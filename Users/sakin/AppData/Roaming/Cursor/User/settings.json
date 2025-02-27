@@ -1,0 +1,11 @@
+{
+    "[css]": {
+        "editor.defaultFormatter": "aeschli.vscode-css-formatter"
+    },
+    "github-enterprise.uri": "https://github.com/mstkt/app",
+    "redhat.telemetry.enabled": false,
+    "git.autofetch": true,
+    "java.jdt.ls.java.home": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.14.7-hotspot",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+}

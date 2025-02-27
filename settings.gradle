@@ -1,0 +1,23 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "GrannyWeather"
+include ':app'
+
+// Updated build directory configuration
+gradle.beforeProject { project ->
+    project.layout.buildDirectory = project.file("${project.projectDir}/build")
+}
