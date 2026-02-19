@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Granny Weather Preview</title>
+  <style>
+    :root { --bg:#cec8ac; --panel:#ede4c7; --ink:#262873; --soft:#5e6297; --bubble:#f2bfaf; --accent:#a8d5e6; }
+    body { margin:0; background:var(--bg); font-family:"Trebuchet MS", Arial, sans-serif; color:var(--ink); }
+    .phone { max-width:500px; min-height:100vh; margin:0 auto; padding:14px; box-sizing:border-box; }
+    .panel { background:var(--panel); border:1px solid var(--ink); border-radius:36px; padding:16px; min-height:80vh; }
+    .tabs { display:flex; gap:10px; margin-top:10px; }
+    .tab { flex:1; border:none; border-radius:10px; padding:10px 8px; background:#d8d0b5; color:var(--ink); font-weight:700; cursor:pointer; }
+    .tab.active { background:var(--ink); color:var(--panel); }
+    .speech-bg { background:var(--accent); border-radius:52px; padding:12px; }
+    .speech { position:relative; background:var(--bubble); border:2px solid var(--ink); border-radius:42px; padding:26px 20px; font-size:58px; line-height:1.08; text-align:center; letter-spacing:1px; }
+    .flower { position:absolute; right:18px; bottom:14px; width:52px; }
+    .speech-tail { width:46px; height:34px; border-right:2px solid var(--ink); border-bottom:2px solid var(--ink); transform:skewX(18deg) rotate(14deg); margin-left:70%; margin-top:-4px; }
+    .hero-row { display:flex; gap:14px; align-items:flex-end; margin-top:12px; }
+    .frame-wrap { position:relative; flex:1; min-height:250px; }
+    .frame { width:100%; }
+    .sun { position:absolute; left:28%; top:28%; width:44%; }
+    .temp-in-frame { position:absolute; left:0; right:0; top:40%; text-align:center; font-size:62px; }
+    .grass { position:absolute; left:26%; bottom:22%; width:48%; }
+    .granny { width:175px; }
+    .logo { width:230px; margin-top:-8px; }
+    .quote { text-align:center; font-size:51px; line-height:1.12; margin:8px 0 0; }
+    .hidden { display:none; }
+    .field { margin:8px 0; width:100%; padding:8px; border-radius:8px; border:1px solid var(--soft); box-sizing:border-box; }
+    .toggle-row { display:flex; justify-content:space-between; align-items:center; }
+    h2 { margin:8px 0 12px; text-align:center; }
+    h3 { margin:8px 0 6px; }
+    .small { color:var(--soft); margin:4px 0; }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <section id="home" class="panel">
+      <div class="speech-bg">
+        <div class="speech" id="heroText">IT'S 5°C WARMER<br/>THAN YESTERDAY!
+          <img class="flower" src="/assets/flower.svg" alt="flower"/>
+        </div>
+        <div class="speech-tail"></div>
+      </div>
+
+      <div class="hero-row">
+        <div class="frame-wrap">
+          <img class="frame" src="/assets/frame.svg" alt="frame"/>
+          <img class="sun" src="/assets/sun.svg" alt="sun"/>
+          <div class="temp-in-frame" id="temp">24°C</div>
+          <img class="grass" src="/assets/grass.svg" alt="grass"/>
+        </div>
+        <img class="granny" src="/assets/granny.svg" alt="granny"/>
+      </div>
+
+      <img class="logo" src="/assets/granny_says.svg" alt="granny says"/>
+      <p class="quote">LEAVE THAT JACKET AT HOME, DARLING;<br/>WE DON'T WANT YOU MELTING OUT THERE!</p>
+      <p class="small" id="location">Istanbul</p>
+    </section>
+
+    <section id="settings" class="panel hidden">
+      <h2>SETTINGS</h2>
+      <h3>LANGUAGE & LOCATION SETTINGS</h3>
+      <p class="small">LANGUAGE : ENGLISH</p>
+      <div class="toggle-row"><p class="small">AUTO-DETECT LOCATION : <span id="autoDetectLabel">ON</span></p><input id="autoDetectToggle" type="checkbox" checked /></div>
+      <select id="locationSelect" class="field"><option>Istanbul</option><option>Kadikoy</option><option>Besiktas</option><option>Ankara</option><option>Izmir</option></select>
+      <input id="manualLocationInput" class="field" placeholder="Set location manually (city / district / neighborhood)" />
+      <h3>NOTIFICATION SETTINGS</h3>
+      <div class="toggle-row"><p class="small">NOTIFICATION TIME</p><div><select id="notifHourSelect"><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select> : <select id="notifMinuteSelect"><option>00</option><option>05</option><option>10</option><option>15</option><option>20</option><option>25</option><option>30</option><option>35</option><option>40</option><option>45</option><option>50</option><option>55</option></select></div></div>
+      <h3>TEMPERATURE PREFERENCES</h3>
+      <div class="toggle-row"><p class="small">TEMPERATURE UNIT</p><select id="unitSelect"><option>Celcius</option><option>Fahrenheit</option></select></div>
+      <h3>FEEDBACK & SUPPORT</h3>
+      <button class="field">SEND FEEDBACK</button><button class="field">HELP / FAQ</button>
+    </section>
+
+    <section id="about" class="panel hidden">
+      <h2>ABOUT</h2><h3>INFO</h3><p class="small">LONG TEXT</p><p class="small">LONG TEXT</p><p class="small">LONG TEXT</p>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-screen="home">🏠 TO GRANNY</button>
+      <button class="tab" data-screen="settings">⚙ SETTINGS</button>
+      <button class="tab" data-screen="about">ℹ ABOUT</button>
+    </nav>
+  </div>
+
+  <script>
+    async function loadWeather() {
+      const res = await fetch('/api/mock-weather');
+      const data = await res.json();
+      document.getElementById('location').textContent = data.location;
+      document.getElementById('temp').textContent = `${Math.round(data.temperatureCelsius)}°C`;
+      document.getElementById('heroText').firstChild.textContent = `IT'S ${Math.max(1, Math.round(Math.random() * 6))}°C WARMER\nTHAN YESTERDAY!`;
+    }
+    const tabs = document.querySelectorAll('.tab');
+    const sections = ['home', 'settings', 'about'];
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active')); tab.classList.add('active');
+      const target = tab.dataset.screen; sections.forEach(id => document.getElementById(id).classList.toggle('hidden', id !== target));
+    }));
+    const autoDetectToggle = document.getElementById('autoDetectToggle');
+    const autoDetectLabel = document.getElementById('autoDetectLabel');
+    const locationSelect = document.getElementById('locationSelect');
+    const manualLocationInput = document.getElementById('manualLocationInput');
+    function syncAutoDetectUI(){const isOn=autoDetectToggle.checked;autoDetectLabel.textContent=isOn?'ON':'OFF';locationSelect.disabled=isOn;manualLocationInput.disabled=isOn;}
+    autoDetectToggle.addEventListener('change', syncAutoDetectUI);
+    document.getElementById('notifHourSelect').value='07'; document.getElementById('notifMinuteSelect').value='30';
+    syncAutoDetectUI(); loadWeather();
+  </script>
+</body>
+</html>

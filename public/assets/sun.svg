@@ -1,0 +1,9 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>
+  <g fill='#e8be69'>
+    <polygon points='60,6 67,27 53,27'/><polygon points='60,114 67,93 53,93'/>
+    <polygon points='6,60 27,53 27,67'/><polygon points='114,60 93,53 93,67'/>
+    <polygon points='20,20 35,34 24,42'/><polygon points='100,20 96,42 85,34'/>
+    <polygon points='20,100 42,96 34,85'/><polygon points='100,100 85,85 96,78'/>
+  </g>
+  <circle cx='60' cy='60' r='36' fill='#d9aa54'/><circle cx='60' cy='60' r='26' fill='#ebc77f'/>
+</svg>
